@@ -18,8 +18,8 @@ public class LoanApprovalService {
             Applicant applicant,
             int amountRequested,
             int termMonths
-    ) {
-        validate(applicant, amountRequested, termMonths);
+    ) { // 1
+        validate(applicant, amountRequested, termMonths); // 2
 
         int score = applicant.creditScore();
         boolean hasDefaults = applicant.hasRecentDefaults();
@@ -27,30 +27,30 @@ public class LoanApprovalService {
 
         Decision decision;
 
-        if (score < 500) {
-            decision = Decision.REJECTED;
-        } else if (score < 650) {
-            if (income >= 2500 && !hasDefaults) {
-                decision = Decision.MANUAL_REVIEW;
+        if (score < 500) { // 3.1
+            decision = Decision.REJECTED; //3.2
+        } else if (score < 650) { // 4
+            if (income >= 2500 /* 5.1 */ && !hasDefaults /* 5.2 */) {
+                decision = Decision.MANUAL_REVIEW; // 6
             } else {
-                decision = Decision.REJECTED;
+                decision = Decision.REJECTED; // 7
             }
         } else {
-            if (amountRequested <= income * 8) {
-                decision = Decision.APPROVED;
+            if (amountRequested <= income * 8) { // 8
+                decision = Decision.APPROVED; // 9
             } else {
-                decision = Decision.MANUAL_REVIEW;
+                decision = Decision.MANUAL_REVIEW; // 10
             }
         }
 
-        if (decision == Decision.MANUAL_REVIEW
-                && applicant.isVip()
-                && score >= 600
-                && !hasDefaults) {
-            decision = Decision.APPROVED;
+        if (decision == Decision.MANUAL_REVIEW /* 11.1 */
+                && applicant.isVip() /* 11.2 */
+                && score >= 600 /* 11.3 */
+                && !hasDefaults  /* 11.4 */) {
+            decision = Decision.APPROVED; // 12
         }
 
-        return decision;
+        return decision; // 13
     }
 
     private void validate(Applicant applicant, int amountRequested, int termMonths) {
